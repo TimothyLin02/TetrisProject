@@ -1,7 +1,7 @@
 import pygame, random, sys
 
-size = (450, 550)
-screen = pygame.display.set_mode(size)
+SIZE = (450, 550)
+screen = pygame.display.set_mode(SIZE)
 
 BLACK = (0, 0, 0)
 GRAY = (200, 200, 200)
@@ -32,12 +32,12 @@ WIDTH = 10
 HEIGHT = 20
 board = None
 
-def new_board():                                                    # create board(2D array). The board will consist of colors. Game logic will occur on the board.
-    global board                                                    # The screen will display the colors of the board in its corresponding locations.
+def new_board():  # create board(2D array). The board will consist of colors. Game logic will occur on the board.
+    global board  # The screen will display the colors of the board in its corresponding locations.
     board = [[WHITE for i in range(WIDTH)] for k in range(HEIGHT)]  # 10 by 20 board
 
 
-# declare shapes: shape consist of coordinates. (0, 0) is the center of the shape
+# declare shapes: shape consist of coordinates. (0,0) is the center of the shape
 SHAPE_Z = [[-1, 0], [0, 0], [0, 1], [1, 1]]
 SHAPE_S = [[-1, 1], [0, 1], [0, 0], [1, 0]]
 SHAPE_SQUARE = [[0, 1], [1, 1], [1, 0], [0, 0]]
@@ -46,17 +46,17 @@ SHAPE_L = [[-1, 1], [-1, 0], [0, 0], [1, 0]]
 SHAPE_R_L = [[-1, 0], [0, 0], [1, 0], [1, 1]]
 SHAPE_T = [[-1, 0], [0, 0], [1, 0], [0, 1]]
 SHAPES = [SHAPE_Z, SHAPE_S, SHAPE_SQUARE, SHAPE_I, SHAPE_L, SHAPE_R_L, SHAPE_T]  # place all shapes in list shapes
-COLORS = [RED, GREEN, YELLOW, LIGHT_BLUE, BLUE, ORANGE, PURPLE]                  # colors corresponding to shape
-SPINS = [True, True, False, True, True, True, True]                              # spin all shapes except square shape
+COLORS = [RED, GREEN, YELLOW, LIGHT_BLUE, BLUE, ORANGE, PURPLE]  # colors corresponding to shape
+SPINS = [True, True, False, True, True, True, True]  # spin all shapes except square shape
 
 
-def move(row, col):             # change shape coordinates
+def move(row, col):  # change shape coordinates
     global shape_row, shape_col
     shape_row += row
     shape_col += col
 
 
-def valid_position():           # check if the shape is in a valid position after movement
+def valid_position():  # check if the shape is in a valid position after movement
     for i, k in shape:
         row = shape_row + i
         col = shape_col + k
@@ -69,7 +69,7 @@ def valid_position():           # check if the shape is in a valid position afte
     return True
 
 
-def go_right():     # function to move shape right
+def go_right():  # function to move shape right
     move(0, 1)
     if not valid_position():  # if shape cannot move right, move back
         move(0, -1)
@@ -100,11 +100,11 @@ def drop():  # drop shape to the bottom
     return t
 
 
-def rotate():   # function to rotate shape
+def rotate():  # function to rotate shape
     global shape, shape_rotate
     if shape_rotate:
-        shape = [[j, -i] for i, j in shape]      # algorithm to rotate shape: new x becomes old-y, new y becomes old x
-        if not valid_position():                 # if cannot rotate shape(invalid position), move back
+        shape = [[j, -i] for i, j in shape]  # algorithm to rotate shape: new x becomes old-y, new y becomes old x
+        if not valid_position():  # if cannot rotate shape(invalid position), move back
             shape = [[-j, i] for i, j in shape]
             return False
         return True
@@ -153,7 +153,7 @@ def menu():  # start game menu
     pygame.display.flip()
 
 
-def game_over():  # function to check if game is over (cannot drop shape)
+def game_over():  # function to check if game is over; cannot drop shape
     global time
     game_over = False
     for i, k in shape:
@@ -239,8 +239,8 @@ def check_final():  # check if shape has reached the bottom/on top of another co
             board[row][col] = shape_color
         global counter, time, level
         remove_filled()  # check for full lines(row of colors != white), remove if there are full lines
-        new_shape()      # add new shape
-        counter += 1     # counter for shapes placed added by one
+        new_shape()  # add new shape
+        counter += 1  # counter for shapes placed added by one
         if counter == 15 and time >= 100:  # dropping speed increases by 50 every 15 blocks placed. Speed does not go below 100.
             level += 1
             counter = 0
